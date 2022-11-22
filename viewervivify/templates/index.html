@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+{% if not g.irc %}
+<form action="/twitch" method="post">
+    Enter you twitch username to connect to twitch chat:
+    <input name="twitchname"><input type="submit">
+</form>
+{% else %}
+    Connected to twitch (I hope)
+    <a href="/info">Info</a> <a href="/status">Status JSON</a>
+{% endif %}
+
+</body>
+</html>
