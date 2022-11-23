@@ -31,9 +31,9 @@ jobs:
     - name: Build with pyinstaller
       run: |
         cd viewervivify
-        pyinstaller --clean -y main.py
+        pyinstaller --clean -y main.py -n viewervivify
     - name: Upload windows dist build
       uses: actions/upload-artifact@v3
       with:
         name: windows-dist
-        path: viewervivify/dist
+        path: viewervivify/dist/viewervivify
