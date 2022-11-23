@@ -36,5 +36,5 @@ jobs:
     - name: Upload windows dist build
       uses: actions/upload-artifact@v3
       with:
-        name: windows-dist
+        name: viewervivify-windows
         path: viewervivify/dist/viewervivify
