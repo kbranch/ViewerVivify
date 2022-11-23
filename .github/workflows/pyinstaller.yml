@@ -36,4 +36,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: windows-dist
-        path: viewervivify/dist/windows
+        path: viewervivify/dist
