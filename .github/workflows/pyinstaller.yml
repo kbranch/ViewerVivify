@@ -31,4 +31,10 @@ jobs:
     - name: Build with pyinstaller
       run: |
         cd viewervivify
-        pyinstaller main.py
+        pyinstaller --clean -y main.py
+        zip 
+    - name: Upload math result for job 1
+      uses: actions/upload-artifact@v3
+      with:
+        name: windows-dist
+        path: viewervivify/dist/windows
