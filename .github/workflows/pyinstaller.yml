@@ -32,7 +32,7 @@ jobs:
     - name: Build with pyinstaller
       run: |
         cd viewervivify
-        pyinstaller --clean -y main.py -n viewervivify
+        pyinstaller --clean -y main.py -n viewervivify --add-binary "templates;templates"
     - name: Upload windows dist build
       uses: actions/upload-artifact@v3
       with:
