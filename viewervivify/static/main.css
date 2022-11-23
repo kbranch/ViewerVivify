@@ -1,0 +1,30 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: sans-serif;
+}
+
+#info {
+    margin: auto;
+    padding-top: 2rem;
+    min-width: 300px;
+    max-width: 600px;
+}
+
+dl {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+dt {
+    font-weight: bolder;
+}
+
+dt, dd {
+    width: 50%;
+    margin: 0;
+    padding: 1rem 0;
+    border-bottom: 1px solid gray;
+}
