@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="static/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-{% if not g.irc %}
+{% if not g.twitch %}
 <form action="/twitch" method="post">
     Enter you twitch username to connect to twitch chat:
     <input name="twitchname"><input type="submit">

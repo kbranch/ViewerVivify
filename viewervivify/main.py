@@ -56,7 +56,7 @@ app = flask.Flask(__name__)
 
 @app.route("/")
 def get_index():
-    flask.g.irc = Global.instance.irc
+    flask.g.twitch = Global.instance.irc
     return flask.render_template("index.html")
 
 
@@ -65,13 +65,20 @@ def get_info():
     return flask.render_template("info.html")
 
 
+@app.route("/info_content")
+def get_info_content():
+    flask.g.twitch = Global.instance.irc
+    flask.g.game = Global.instance.game
+    return flask.render_template("info_content.html")
+
+
 @app.route("/status")
 def get_status():
     status = {}
     if Global.instance.game:
         status["game"] = {
             "name": Global.instance.game.__class__.__name__,
-            "actions": [{"id": action.id, "name": action.name, "cost": action.cost} for action in Global.instance.game.get_actions()],
+            "actions": [{"id": action.id, "name": action.name, "cost": action.cost, "busy": action.busy} for action in Global.instance.game.get_actions()],
         }
     if Global.instance.irc:
         status["twitch"] = {
@@ -88,6 +95,10 @@ def connect_to_twitch():
 
 
 if __name__ == '__main__':
+    import logging
+    log = logging.getLogger('werkzeug')
+    log.setLevel(logging.ERROR)
+
     Global.instance = Global()
     import webbrowser
     webbrowser.open("http://127.0.0.1:5000", autoraise=True)

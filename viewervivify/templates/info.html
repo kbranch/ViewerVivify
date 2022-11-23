@@ -6,18 +6,9 @@
 function update() {
     const req = new XMLHttpRequest();
     req.addEventListener("load", function() {
-        var info = document.getElementById("info");
-        var data = JSON.parse(this.responseText);
-        var html = "Not connected to twitch";
-        if (data.twitch && data.twitch.connected) {
-            html = "Available messages:<br>";
-            for(var action of data.game.actions) {
-                html += `<b>!${action.id}</b>: ${action.name}<br>`
-            }
-        }
-        info.innerHTML = html;
+        document.getElementById("info").innerHTML = this.responseText;
     });
-    req.open("GET", "/status");
+    req.open("GET", "/info_content");
     req.send();
     setTimeout(update, 1000);
 }

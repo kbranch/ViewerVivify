@@ -1,0 +1,9 @@
+{% if not g.twitch or not g.twitch.is_connected %}
+    Not connected to twitch<br>
+{% endif %}
+
+{% if g.game %}
+    {% for action in g.game.get_actions() %}
+        {%if action.busy%}<strike>{%endif%}<b>{{action.id}}</b>: {{action.name}} ({{action.cost}}){%if action.busy%}</strike>{%endif%}<br>
+    {% endfor %}
+{% endif %}
