@@ -52,18 +52,17 @@ class LADXR(Game):
 
     @action(id="gfxrandom", name="Random graphics", cost=1000)
     def do_gfx_random(self):
-        gfx = random.choice(os.listdir(os.path.join(os.path.dirname(__file__), f"ladxgfx")))
-        self.do_gfx(gfx[:-4])
+        gfx_list = [os.path.splitext(name)[0] for name in os.listdir("data/ladx") if os.path.splitext(name)[1] == ".bin"]
+        self.do_gfx(random.choice(gfx_list))
 
     def do_gfx(self, name):
-        gfx = open(os.path.join(os.path.dirname(__file__), f"ladxgfx/{name}.bin"), "rb").read()
+        gfx = open(f"data/ladx/{name}.bin", "rb").read()
         self.__emulator.write_rom(0x2C * 0x4000, gfx)
 
     @action(id="disablesword", name="Disable sword (60 seconds)", cost=500)
     def do_disable_sword(self):
         self.__emulator.write_rom16(0x129E + 2, 0x12ED)
         self.__emulator.write_rom8(0x1322, 0xFF)
-
     @do_disable_sword.timeout(60)
     def do_enable_sword(self):
         self.__emulator.write_rom16(0x129E + 2, 0x1528)
