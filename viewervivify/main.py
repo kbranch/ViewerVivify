@@ -22,7 +22,7 @@ class VVIRC(IRC):
 
     def on_channel_message(self, channel, user, message):
         if message.startswith("!"):
-            if Global.instance.game.run_action(message[1:]):
+            if Global.instance.game and Global.instance.game.run_action(message[1:]):
                 self.message(self.__channel, f"Executing {message[1:]}")
             else:
                 self.message(self.__channel, f"Unknown action {message[1:]}")

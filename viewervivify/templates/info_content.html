@@ -6,7 +6,7 @@
 Available messages:
     <dl>
     {% for action in g.game.get_actions() %}
-        {%if action.busy%}<strike>{%endif%}<dt>{{action.id}}:</dt> <dd>{{action.name}} ({{action.cost}})</dd>{%if action.busy%}</strike>{%endif%}<br>
+        <dt>{%if action.busy%}<strike>{%endif%}!{{action.id}}:{%if action.busy%}</strike>{%endif%}</dt> <dd>{{action.name}} ({{action.cost}})</dd><br>
     {% endfor %}
     </dl>
 {% endif %}

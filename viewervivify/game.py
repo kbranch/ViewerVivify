@@ -11,7 +11,7 @@ class Game:
         self.__actions = []
         for attr_name in dir(self):
             attr = getattr(self, attr_name)
-            if isinstance(attr, GameAction):
+            if isinstance(attr, GameAction) and attr not in self.__actions:
                 self.__actions.append(attr)
         self.__actions.sort(key=lambda a: a.id)
         self.__sched = sched.scheduler()
@@ -34,9 +34,16 @@ class Game:
                 self.__sched.enter(0, 0, lambda: act.function(self))
                 if act.timeout_function:
                     act.busy = True
+                    if act.repeat_function:
+                        self.__sched.enter(act.repeat_delay, 0, lambda: self.__action_repeat(act))
                     self.__sched.enter(act.timeout_delay, 0, lambda: self.__action_timeout(act))
                 return True
         return False
+
+    def __action_repeat(self, act):
+        if act.busy:
+            act.repeat_function(self)
+            self.__sched.enter(act.repeat_delay, 0, lambda: self.__action_repeat(act))
 
     def __action_timeout(self, act):
         act.timeout_function(self)
@@ -60,14 +67,23 @@ class GameAction:
         self.cost = cost
         self.timeout_delay = None
         self.timeout_function = None
+        self.repeat_delay = None
+        self.repeat_function = None
         self.busy = False
 
     def timeout(self, delay):
         def timeout_wrapper(timeout_function):
             self.timeout_delay = delay
             self.timeout_function = timeout_function
-            return timeout_function
+            return self
         return timeout_wrapper
+
+    def repeat(self, delay):
+        def repeat_wrapper(repeat_function):
+            self.repeat_delay = delay
+            self.repeat_function = repeat_function
+            return self
+        return repeat_wrapper
 
 
 def action(*, id, name, cost):
