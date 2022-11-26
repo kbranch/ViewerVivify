@@ -1,9 +1,16 @@
 {% if not g.twitch or not g.twitch.is_connected %}
     Not connected to twitch<br>
+{% else %}
+    User points:
+    <dl>
+    {% for user in g.twitch.users %}
+        <dt>{{user.get("nick")}}</dt> <dd>{{user.get("points")|int}}</dd>
+    {% endfor %}
+    </dl>
 {% endif %}
 
 {% if g.game %}
-Available messages:
+    Available actions:
     <dl>
     {% for action in g.game.get_actions() %}
         <dt>{%if action.busy%}<strike>{%endif%}!{{action.id}}:{%if action.busy%}</strike>{%endif%}</dt> <dd>{{action.name}} ({{action.cost}})</dd><br>

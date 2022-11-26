@@ -39,79 +39,79 @@ class LADXR(Game):
     def do_damage(self):
         self.__emulator.write_ram8(0xDB94 - 0xC000, 0x08)
 
-    @action(id="gfxages", name="AgesGirl graphics", cost=1000)
+    @action(id="gfxages", group="gfx", name="AgesGirl graphics", cost=1000)
     def do_gfx_agesgirl(self):
         self.do_gfx("AgesGirl")
 
-    @action(id="gfxbowwow", name="Bowwow graphics", cost=1000)
+    @action(id="gfxbowwow", group="gfx", name="Bowwow graphics", cost=1000)
     def do_gfx_bowwow(self):
         self.do_gfx("Bowwow")
 
-    @action(id="gfxbunny", name="Bunny graphics", cost=1000)
+    @action(id="gfxbunny", group="gfx", name="Bunny graphics", cost=1000)
     def do_gfx_bunny(self):
         self.do_gfx("Bunny")
 
-    @action(id="gfxgrandma", name="GrandmaUlrira graphics", cost=1000)
+    @action(id="gfxgrandma", group="gfx", name="GrandmaUlrira graphics", cost=1000)
     def do_gfx_grandmaulrira(self):
         self.do_gfx("GrandmaUlrira")
 
-    @action(id="gfxkirby", name="Kirby graphics", cost=1000)
+    @action(id="gfxkirby", group="gfx", name="Kirby graphics", cost=1000)
     def do_gfx_kirby(self):
         self.do_gfx("Kirby")
 
-    @action(id="gfxluigi", name="Luigi graphics", cost=1000)
+    @action(id="gfxluigi", group="gfx", name="Luigi graphics", cost=1000)
     def do_gfx_luigi(self):
         self.do_gfx("Luigi")
 
-    @action(id="gfxmarin", name="Marin graphics", cost=1000)
+    @action(id="gfxmarin", group="gfx", name="Marin graphics", cost=1000)
     def do_gfx_marin(self):
         self.do_gfx("Marin")
 
-    @action(id="gfxalpha", name="MarinAlpha graphics", cost=1000)
+    @action(id="gfxalpha", group="gfx", name="MarinAlpha graphics", cost=1000)
     def do_gfx_alpha(self):
         self.do_gfx("MarinAlpha")
 
-    @action(id="gfxmario", name="Mario graphics", cost=1000)
+    @action(id="gfxmario", group="gfx", name="Mario graphics", cost=1000)
     def do_gfx_mario(self):
         self.do_gfx("Mario")
 
-    @action(id="gfxmartha", name="Martha graphics", cost=1000)
+    @action(id="gfxmartha", group="gfx", name="Martha graphics", cost=1000)
     def do_gfx_martha(self):
         self.do_gfx("Martha")
 
-    @action(id="gfxmatty", name="Matty_LA graphics", cost=1000)
+    @action(id="gfxmatty", group="gfx", name="Matty_LA graphics", cost=1000)
     def do_gfx_matty(self):
         self.do_gfx("Matty_LA")
 
-    @action(id="gfxmeme", name="Meme graphics", cost=1000)
+    @action(id="gfxmeme", group="gfx", name="Meme graphics", cost=1000)
     def do_gfx_meme(self):
         self.do_gfx("Meme")
 
-    @action(id="gfxnes", name="NESLink graphics", cost=1000)
+    @action(id="gfxnes", group="gfx", name="NESLink graphics", cost=1000)
     def do_gfx_nes(self):
         self.do_gfx("NESLink")
 
-    @action(id="gfxrichard", name="Richard graphics", cost=1000)
+    @action(id="gfxrichard", group="gfx", name="Richard graphics", cost=1000)
     def do_gfx_richard(self):
         self.do_gfx("Richard")
 
-    @action(id="gfxrooster", name="Rooster graphics", cost=1000)
+    @action(id="gfxrooster", group="gfx", name="Rooster graphics", cost=1000)
     def do_gfx_rooster(self):
         self.do_gfx("Rooster")
 
-    @action(id="gfxrosa", name="Rosa graphics", cost=1000)
+    @action(id="gfxrosa", group="gfx", name="Rosa graphics", cost=1000)
     def do_gfx_rosa(self):
         self.do_gfx("Rosa")
 
-    @action(id="gfxsubrosian", name="Subrosian graphics", cost=1000)
+    @action(id="gfxsubrosian", group="gfx", name="Subrosian graphics", cost=1000)
     def do_gfx_subrosian(self):
         self.do_gfx("Subrosian")
 
-    @action(id="gfxtarin", name="Tarin graphics", cost=1000)
+    @action(id="gfxtarin", group="gfx", name="Tarin graphics", cost=1000)
     def do_gfx_tarin(self):
         self.do_gfx("Tarin")
 
-    @action(id="gfxrandom", name="Random graphics", cost=1000)
+    @action(id="gfxrandom", group="gfx", name="Random graphics", cost=1000)
     def do_gfx_random(self):
         gfx_list = [os.path.splitext(name)[0] for name in os.listdir("data/ladx") if os.path.splitext(name)[1] == ".bin"]
         self.do_gfx(random.choice(gfx_list))
@@ -120,7 +120,7 @@ class LADXR(Game):
         gfx = open(f"data/ladx/{name}.bin", "rb").read()
         self.__emulator.write_rom(0x2C * 0x4000, gfx)
 
-    @action(id="disablesword", name="Disable sword (60 seconds)", cost=500)
+    @action(id="disablesword", group="input", name="Disable sword (60 seconds)", cost=500)
     def do_disable_sword(self):
         self.__emulator.write_rom16(0x129E + 2, 0x12ED)
         self.__emulator.write_rom8(0x1322, 0xFF)
@@ -129,97 +129,97 @@ class LADXR(Game):
         self.__emulator.write_rom16(0x129E + 2, 0x1528)
         self.__emulator.write_rom8(0x1322, 0x01)
 
-    @action(id="disablebombs", name="Disable bombs (60 seconds)", cost=500)
+    @action(id="disablebombs", group="input", name="Disable bombs (60 seconds)", cost=500)
     def do_disable_bombs(self):
         self.__emulator.write_rom16(0x129E + 4, 0x12ED)
     @do_disable_bombs.timeout(60)
     def do_enable_bombs(self):
         self.__emulator.write_rom16(0x129E + 4, 0x135A)
 
-    @action(id="disablebow", name="Disable bow (60 seconds)", cost=500)
+    @action(id="disablebow", group="input", name="Disable bow (60 seconds)", cost=500)
     def do_disable_bow(self):
         self.__emulator.write_rom16(0x129E + 10, 0x12ED)
     @do_disable_bow.timeout(60)
     def do_enable_bow(self):
         self.__emulator.write_rom16(0x129E + 10, 0x13BD)
 
-    @action(id="disablehook", name="Disable hookshot (60 seconds)", cost=500)
+    @action(id="disablehook", group="input", name="Disable hookshot (60 seconds)", cost=500)
     def do_disable_hook(self):
         self.__emulator.write_rom16(0x129E + 12, 0x12ED)
     @do_disable_hook.timeout(60)
     def do_enable_hook(self):
         self.__emulator.write_rom16(0x129E + 12, 0x1319)
 
-    @action(id="disablerod", name="Disable magic rod (60 seconds)", cost=500)
+    @action(id="disablerod", group="input", name="Disable magic rod (60 seconds)", cost=500)
     def do_disable_rod(self):
         self.__emulator.write_rom16(0x129E + 14, 0x12ED)
     @do_disable_rod.timeout(60)
     def do_enable_rod(self):
         self.__emulator.write_rom16(0x129E + 14, 0x12D8)
 
-    @action(id="disableocarina", name="Disable ocarina (60 seconds)", cost=500)
+    @action(id="disableocarina", group="input", name="Disable ocarina (60 seconds)", cost=500)
     def do_disable_ocarina(self):
         self.__emulator.write_rom16(0x129E + 18, 0x12ED)
     @do_disable_ocarina.timeout(60)
     def do_enable_ocarina(self):
         self.__emulator.write_rom16(0x129E + 18, 0x41FC)
 
-    @action(id="disablefeather", name="Disable feather (60 seconds)", cost=500)
+    @action(id="disablefeather", group="input", name="Disable feather (60 seconds)", cost=500)
     def do_disable_feather(self):
         self.__emulator.write_rom16(0x129E + 20, 0x12ED)
     @do_disable_feather.timeout(60)
     def do_enable_feather(self):
         self.__emulator.write_rom16(0x129E + 20, 0x14CB)
 
-    @action(id="disableshovel", name="Disable shovel (60 seconds)", cost=500)
+    @action(id="disableshovel", group="input", name="Disable shovel (60 seconds)", cost=500)
     def do_disable_shovel(self):
         self.__emulator.write_rom16(0x129E + 22, 0x12ED)
     @do_disable_shovel.timeout(60)
     def do_enable_shovel(self):
         self.__emulator.write_rom16(0x129E + 22, 0x12F8)
 
-    @action(id="disablepowder", name="Disable magic powder (60 seconds)", cost=500)
+    @action(id="disablepowder", group="input", name="Disable magic powder (60 seconds)", cost=500)
     def do_disable_powder(self):
         self.__emulator.write_rom16(0x129E + 24, 0x12ED)
     @do_disable_powder.timeout(60)
     def do_enable_powder(self):
         self.__emulator.write_rom16(0x129E + 24, 0x148D)
 
-    @action(id="disablerang", name="Disable boomerang (60 seconds)", cost=500)
+    @action(id="disablerang", group="input", name="Disable boomerang (60 seconds)", cost=500)
     def do_disable_rang(self):
         self.__emulator.write_rom16(0x129E + 26, 0x12ED)
     @do_disable_rang.timeout(60)
     def do_enable_rang(self):
         self.__emulator.write_rom16(0x129E + 26, 0x1383)
 
-    @action(id="invert", name="Invert buttons (60 seconds)", cost=500)
+    @action(id="invert", group="input", name="Invert buttons (60 seconds)", cost=500)
     def do_invert_dpad(self):
         self.__emulator.write_rom(0x2864, b'\xcb\x37\x2f\xe6\xf0\xb0\x47\x87\xe6\xaa\x4f\x78\x1f\xe6\x55\xb1\x00\x00\x00\x00')
     @do_invert_dpad.timeout(60)
     def do_normal_dpad(self):
         self.__emulator.write_rom(0x2864, b'\xf0\x00\xf0\x00\xf0\x00\xf0\x00\xf0\x00\xf0\x00\xf0\x00\xcb\x37\x2f\xe6\xf0\xb0')
 
-    @action(id="green", name="Green link (color only)", cost=500)
+    @action(id="green", group="color", name="Green link (color only)", cost=500)
     def do_color_green(self):
         self.__emulator.write_rom(0x1D8C, b'\x3E\x00\x00\x00\x00\x00\x00')
         self.__emulator.write_rom(0x1DD2, b'\x3E\x00\x00\x00\x00\x00\x00')
 
-    @action(id="yellow", name="Yellow link (color only)", cost=500)
+    @action(id="yellow", group="color", name="Yellow link (color only)", cost=500)
     def do_color_yellow(self):
         self.__emulator.write_rom(0x1D8C, b'\x3E\x01\x00\x00\x00\x00\x00')
         self.__emulator.write_rom(0x1DD2, b'\x3E\x01\x00\x00\x00\x00\x00')
 
-    @action(id="red", name="Red link (color only)", cost=500)
+    @action(id="red", group="color", name="Red link (color only)", cost=500)
     def do_color_red(self):
         self.__emulator.write_rom(0x1D8C, b'\x3E\x02\x00\x00\x00\x00\x00')
         self.__emulator.write_rom(0x1DD2, b'\x3E\x02\x00\x00\x00\x00\x00')
 
-    @action(id="blue", name="Blue link (color only)", cost=500)
+    @action(id="blue", group="color", name="Blue link (color only)", cost=500)
     def do_color_blue(self):
         self.__emulator.write_rom(0x1D8C, b'\x3E\x03\x00\x00\x00\x00\x00')
         self.__emulator.write_rom(0x1DD2, b'\x3E\x03\x00\x00\x00\x00\x00')
 
-    @action(id="disco", name="Disco link (30 seconds, color only)", cost=500)
+    @action(id="disco", group="color", name="Disco link (30 seconds, color only)", cost=500)
     def do_color_disco(self):
         self.__emulator.write_rom(0x1D8C, b'\x3E\x00\x00\x00\x00\x00\x00')
         self.__emulator.write_rom(0x1DD2, b'\x3E\x00\x00\x00\x00\x00\x00')

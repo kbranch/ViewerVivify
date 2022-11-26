@@ -13,7 +13,7 @@ class Game:
             attr = getattr(self, attr_name)
             if isinstance(attr, GameAction) and attr not in self.__actions:
                 self.__actions.append(attr)
-        self.__actions.sort(key=lambda a: a.id)
+        self.__actions.sort(key=lambda a: (a.group, a.id))
         self.__sched = sched.scheduler()
         self.__running = True
         self.__thread = threading.Thread(target=self.__run_sched)
@@ -26,19 +26,24 @@ class Game:
     def get_actions(self):
         return self.__actions
 
-    def run_action(self, name):
+    def find_action(self, name):
         for act in self.__actions:
             if act.id.lower() == name.lower() or act.name.lower() == name.lower():
-                if act.busy:
-                    return False
-                self.__sched.enter(0, 0, lambda: act.function(self))
-                if act.timeout_function:
-                    act.busy = True
-                    if act.repeat_function:
-                        self.__sched.enter(act.repeat_delay, 0, lambda: self.__action_repeat(act))
-                    self.__sched.enter(act.timeout_delay, 0, lambda: self.__action_timeout(act))
-                return True
-        return False
+                return act
+        return None
+
+    def run_action(self, act):
+        act.busy = True
+        self.__sched.enter(0, 0, lambda: self.__action_start(act))
+
+    def __action_start(self, act):
+        act.function(self)
+        if act.timeout_function:
+            if act.repeat_function:
+                self.__sched.enter(act.repeat_delay, 0, lambda: self.__action_repeat(act))
+            self.__sched.enter(act.timeout_delay, 0, lambda: self.__action_timeout(act))
+        else:
+            act.busy = False
 
     def __action_repeat(self, act):
         if act.busy:
@@ -60,10 +65,11 @@ class Game:
 
 
 class GameAction:
-    def __init__(self, function, id, name, cost):
+    def __init__(self, function, id, name, group, cost):
         self.function = function
         self.id = id
         self.name = name
+        self.group = group
         self.cost = cost
         self.timeout_delay = None
         self.timeout_function = None
@@ -86,9 +92,9 @@ class GameAction:
         return repeat_wrapper
 
 
-def action(*, id, name, cost):
+def action(*, id, name, group="", cost):
     """ Marks a function as game action.
     """
     def wrapper(f):
-        return GameAction(f, id, name, cost)
+        return GameAction(f, id, name, group, cost)
     return wrapper

@@ -8,9 +8,14 @@ html {
 
 #info {
     margin: auto;
-    padding-top: 2rem;
-    min-width: 300px;
-    max-width: 600px;
+
+    height: 100vh;
+    overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+#info::-webkit-scrollbar {
+  display: none;
 }
 
 dl {
@@ -25,6 +30,6 @@ dt {
 dt, dd {
     width: 50%;
     margin: 0;
-    padding: 1rem 0;
+    padding: 0.25rem 0;
     border-bottom: 1px solid gray;
 }
