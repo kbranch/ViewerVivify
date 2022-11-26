@@ -232,3 +232,11 @@ class LADXR(Game):
     def end_disco(self):
         self.__emulator.write_rom8(0x1D8D, 0)
         self.__emulator.write_rom8(0x1DD3, 0)
+
+    @action(id="rng", name="Randomize inventory", cost=1)
+    def do_randomize_inventory(self):
+        items = [n for n in self.__emulator.read_ram(0xDB00 - 0xC000, 16) if n != 0]
+        random.shuffle(items)
+        print(items)
+        items += [0] * (16 - len(items))
+        self.__emulator.write_ram(0xDB00 - 0xC000, bytes(items))
