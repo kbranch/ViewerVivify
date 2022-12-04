@@ -60,7 +60,8 @@ class TwitchIRC(IRC):
             points_delta = (t1 - t0) * POINTS_PER_SECOND
             t0 = t1
             for nick, user in self.get_users().items():
-                user["points"] = user.get("points", 0.0) + points_delta
+                if user.get("online"):
+                    user["points"] = user.get("points", 0.0) + points_delta
 
     @property
     def users(self):

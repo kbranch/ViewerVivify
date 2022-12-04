@@ -16,12 +16,16 @@ class LADXR(Game):
         assert self.is_running(emulator)
         self.__emulator = emulator
 
-    @action(id="zol", name="Zol storm!", cost=100)
+    @action(id="zol", name="Zol storm!", cost=500)
     def do_slime_rain(self):
         self.__emulator.write_ram8(0xDDF8 - 0xC000, 0xF0)
         self.__emulator.write_ram8(0xDDF7 - 0xC000, self.__emulator.read_ram8(0xDDF7 - 0xC000) | 0x01)
 
-    @action(id="cucco", name="Cucco party!", cost=100)
+    @action(id="bomb", name="Bomb rain!", cost=300)
+    def do_slime_rain(self):
+        self.__emulator.write_ram8(0xDE12 - 0xC000, 0x20)
+
+    @action(id="cucco", name="Cucco party!", cost=200)
     def do_cucco_party(self):
         self.__emulator.write_ram8(0xDDF8 - 0xC000, 0xF1)
         self.__emulator.write_ram8(0xDDF7 - 0xC000, self.__emulator.read_ram8(0xDDF7 - 0xC000) | 0x01)
@@ -39,79 +43,83 @@ class LADXR(Game):
     def do_damage(self):
         self.__emulator.write_ram8(0xDB94 - 0xC000, 0x08)
 
-    @action(id="gfxages", group="gfx", name="AgesGirl graphics", cost=1000)
+    @action(id="addbombs", name="Give 10 bombs", cost=100)
+    def do_damage(self):
+        self.__emulator.write_ram8(0xDB4D - 0xC000, min(self.__emulator.read_ram8(0xDB4D - 0xC000) + 0x10, self.__emulator.read_ram8(0xDB77 - 0xC000)))
+
+    @action(id="gfxages", group="gfx", name="AgesGirl graphics", cost=500)
     def do_gfx_agesgirl(self):
         self.do_gfx("AgesGirl")
 
-    @action(id="gfxbowwow", group="gfx", name="Bowwow graphics", cost=1000)
+    @action(id="gfxbowwow", group="gfx", name="Bowwow graphics", cost=500)
     def do_gfx_bowwow(self):
         self.do_gfx("Bowwow")
 
-    @action(id="gfxbunny", group="gfx", name="Bunny graphics", cost=1000)
+    @action(id="gfxbunny", group="gfx", name="Bunny graphics", cost=500)
     def do_gfx_bunny(self):
         self.do_gfx("Bunny")
 
-    @action(id="gfxgrandma", group="gfx", name="GrandmaUlrira graphics", cost=1000)
+    @action(id="gfxgrandma", group="gfx", name="GrandmaUlrira graphics", cost=500)
     def do_gfx_grandmaulrira(self):
         self.do_gfx("GrandmaUlrira")
 
-    @action(id="gfxkirby", group="gfx", name="Kirby graphics", cost=1000)
+    @action(id="gfxkirby", group="gfx", name="Kirby graphics", cost=500)
     def do_gfx_kirby(self):
         self.do_gfx("Kirby")
 
-    @action(id="gfxluigi", group="gfx", name="Luigi graphics", cost=1000)
+    @action(id="gfxluigi", group="gfx", name="Luigi graphics", cost=500)
     def do_gfx_luigi(self):
         self.do_gfx("Luigi")
 
-    @action(id="gfxmarin", group="gfx", name="Marin graphics", cost=1000)
+    @action(id="gfxmarin", group="gfx", name="Marin graphics", cost=500)
     def do_gfx_marin(self):
         self.do_gfx("Marin")
 
-    @action(id="gfxalpha", group="gfx", name="MarinAlpha graphics", cost=1000)
+    @action(id="gfxalpha", group="gfx", name="MarinAlpha graphics", cost=500)
     def do_gfx_alpha(self):
         self.do_gfx("MarinAlpha")
 
-    @action(id="gfxmario", group="gfx", name="Mario graphics", cost=1000)
+    @action(id="gfxmario", group="gfx", name="Mario graphics", cost=500)
     def do_gfx_mario(self):
         self.do_gfx("Mario")
 
-    @action(id="gfxmartha", group="gfx", name="Martha graphics", cost=1000)
+    @action(id="gfxmartha", group="gfx", name="Martha graphics", cost=500)
     def do_gfx_martha(self):
         self.do_gfx("Martha")
 
-    @action(id="gfxmatty", group="gfx", name="Matty_LA graphics", cost=1000)
+    @action(id="gfxmatty", group="gfx", name="Matty_LA graphics", cost=500)
     def do_gfx_matty(self):
         self.do_gfx("Matty_LA")
 
-    @action(id="gfxmeme", group="gfx", name="Meme graphics", cost=1000)
+    @action(id="gfxmeme", group="gfx", name="Meme graphics", cost=500)
     def do_gfx_meme(self):
         self.do_gfx("Meme")
 
-    @action(id="gfxnes", group="gfx", name="NESLink graphics", cost=1000)
+    @action(id="gfxnes", group="gfx", name="NESLink graphics", cost=500)
     def do_gfx_nes(self):
         self.do_gfx("NESLink")
 
-    @action(id="gfxrichard", group="gfx", name="Richard graphics", cost=1000)
+    @action(id="gfxrichard", group="gfx", name="Richard graphics", cost=500)
     def do_gfx_richard(self):
         self.do_gfx("Richard")
 
-    @action(id="gfxrooster", group="gfx", name="Rooster graphics", cost=1000)
+    @action(id="gfxrooster", group="gfx", name="Rooster graphics", cost=500)
     def do_gfx_rooster(self):
         self.do_gfx("Rooster")
 
-    @action(id="gfxrosa", group="gfx", name="Rosa graphics", cost=1000)
+    @action(id="gfxrosa", group="gfx", name="Rosa graphics", cost=500)
     def do_gfx_rosa(self):
         self.do_gfx("Rosa")
 
-    @action(id="gfxsubrosian", group="gfx", name="Subrosian graphics", cost=1000)
+    @action(id="gfxsubrosian", group="gfx", name="Subrosian graphics", cost=500)
     def do_gfx_subrosian(self):
         self.do_gfx("Subrosian")
 
-    @action(id="gfxtarin", group="gfx", name="Tarin graphics", cost=1000)
+    @action(id="gfxtarin", group="gfx", name="Tarin graphics", cost=500)
     def do_gfx_tarin(self):
         self.do_gfx("Tarin")
 
-    @action(id="gfxrandom", group="gfx", name="Random graphics", cost=1000)
+    @action(id="gfxrandom", group="gfx", name="Random graphics", cost=500)
     def do_gfx_random(self):
         gfx_list = [os.path.splitext(name)[0] for name in os.listdir("data/ladx") if os.path.splitext(name)[1] == ".bin"]
         self.do_gfx(random.choice(gfx_list))
@@ -199,6 +207,13 @@ class LADXR(Game):
     def do_enable_rang(self):
         self.__emulator.write_rom16(0x129E + 26, 0x1383)
 
+    @action(id="disableflippers", group="input", name="Disable flippers (60 seconds)", cost=500)
+    def do_disable_flippers(self):
+        self.__emulator.write_rom(0x7717 + 0x4000, b'\x00\x00')
+    @do_disable_flippers.timeout(60)
+    def do_enable_flippers(self):
+        self.__emulator.write_rom(0x7717 + 0x4000, b'\x20\x19')
+
     @action(id="invert", group="input", name="Invert buttons (60 seconds)", cost=300)
     def do_invert_dpad(self):
         self.__emulator.write_rom(0x2864, b'\xcb\x37\x2f\xe6\xf0\xb0\x47\x87\xe6\xaa\x4f\x78\x1f\xe6\x55\xb1\x00\x00\x00\x00')
@@ -214,6 +229,13 @@ class LADXR(Game):
     def undo_runrunrun(self):
         self.__emulator.write_rom(0x11ED, b'\x20\x0F')
         self.__emulator.write_rom(0x11F3, b'\x28\x05')
+
+    @action(id="slow", group="input", name="Slow (30 seconds)", cost=300)
+    def do_slow(self):
+        self.__emulator.write_rom(0x11ED, b'\x3E\x01')
+    @do_slow.timeout(60)
+    def undo_runrunrun(self):
+        self.__emulator.write_rom(0x11ED, b'\xF0\xB2')
 
     @action(id="green", group="color", name="Green link (color only)", cost=300)
     def do_color_green(self):
@@ -253,6 +275,5 @@ class LADXR(Game):
     def do_randomize_inventory(self):
         items = [n for n in self.__emulator.read_ram(0xDB00 - 0xC000, 16) if n != 0]
         random.shuffle(items)
-        print(items)
         items += [0] * (16 - len(items))
         self.__emulator.write_ram(0xDB00 - 0xC000, bytes(items))

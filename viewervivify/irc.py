@@ -71,17 +71,18 @@ class IRC:
             self.on_server_connected()
         elif command == "353":  # NAMES
             for nick in trailing.split(" "):
-                self.__update_user(nick, {})
+                self.__update_user(nick, {"online": True})
         elif command == "JOIN":
-            self.__update_user(prefix, {})
+            self.__update_user(prefix, {"online": True})
         elif command == "PART":
             if prefix in self.__users:
-                del self.__users[prefix]
+                self.__update_user(prefix, {"online": False})
         elif command == "PING":
             pong = "PONG :" + trailing + "\r\n"
             self.__socket.sendall(pong.encode("utf-8"))
         elif command == "PRIVMSG":
             user = self.__update_user(prefix, tags)
+            user["online"] = True
             if msg.startswith("#"):
                 self.on_channel_message(msg[1:], user, trailing)
         elif command == "WHISPER":
