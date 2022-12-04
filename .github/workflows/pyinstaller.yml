@@ -24,6 +24,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -U pyinstaller
         pip install -U flask
+        pip install -U requests
     - name: Install pyevilemu
       run: |
         git clone https://github.com/daid/pyevilemu.git
