@@ -35,7 +35,7 @@ class LADXR(Game):
     def do_regen(self):
         self.__emulator.write_ram8(0xDB93 - 0xC000, 0xFF)
 
-    @action(id="damage", name="Do 1 heart of damage", cost=20)
+    @action(id="damage", name="Do 1 heart of damage", cost=100)
     def do_damage(self):
         self.__emulator.write_ram8(0xDB94 - 0xC000, 0x08)
 
@@ -136,6 +136,13 @@ class LADXR(Game):
     def do_enable_bombs(self):
         self.__emulator.write_rom16(0x129E + 4, 0x135A)
 
+    @action(id="disableboots", group="input", name="Disable boots (60 seconds)", cost=500)
+    def do_disable_boots(self):
+        self.__emulator.write_rom8(0x1705, 0xC9)
+    @do_disable_boots.timeout(60)
+    def do_enable_boots(self):
+        self.__emulator.write_rom8(0x1705, 0xF0)
+
     @action(id="disablebow", group="input", name="Disable bow (60 seconds)", cost=500)
     def do_disable_bow(self):
         self.__emulator.write_rom16(0x129E + 10, 0x12ED)
@@ -192,34 +199,43 @@ class LADXR(Game):
     def do_enable_rang(self):
         self.__emulator.write_rom16(0x129E + 26, 0x1383)
 
-    @action(id="invert", group="input", name="Invert buttons (60 seconds)", cost=500)
+    @action(id="invert", group="input", name="Invert buttons (60 seconds)", cost=300)
     def do_invert_dpad(self):
         self.__emulator.write_rom(0x2864, b'\xcb\x37\x2f\xe6\xf0\xb0\x47\x87\xe6\xaa\x4f\x78\x1f\xe6\x55\xb1\x00\x00\x00\x00')
     @do_invert_dpad.timeout(60)
     def do_normal_dpad(self):
         self.__emulator.write_rom(0x2864, b'\xf0\x00\xf0\x00\xf0\x00\xf0\x00\xf0\x00\xf0\x00\xf0\x00\xcb\x37\x2f\xe6\xf0\xb0')
 
-    @action(id="green", group="color", name="Green link (color only)", cost=500)
+    @action(id="runrunrun", group="input", name="Constant boots power (60 seconds)", cost=300)
+    def do_runrunrun(self):
+        self.__emulator.write_rom(0x11ED, b'\x00\x00')
+        self.__emulator.write_rom(0x11F3, b'\x00\x00')
+    @do_runrunrun.timeout(60)
+    def undo_runrunrun(self):
+        self.__emulator.write_rom(0x11ED, b'\x20\x0F')
+        self.__emulator.write_rom(0x11F3, b'\x28\x05')
+
+    @action(id="green", group="color", name="Green link (color only)", cost=300)
     def do_color_green(self):
         self.__emulator.write_rom(0x1D8C, b'\x3E\x00\x00\x00\x00\x00\x00')
         self.__emulator.write_rom(0x1DD2, b'\x3E\x00\x00\x00\x00\x00\x00')
 
-    @action(id="yellow", group="color", name="Yellow link (color only)", cost=500)
+    @action(id="yellow", group="color", name="Yellow link (color only)", cost=300)
     def do_color_yellow(self):
         self.__emulator.write_rom(0x1D8C, b'\x3E\x01\x00\x00\x00\x00\x00')
         self.__emulator.write_rom(0x1DD2, b'\x3E\x01\x00\x00\x00\x00\x00')
 
-    @action(id="red", group="color", name="Red link (color only)", cost=500)
+    @action(id="red", group="color", name="Red link (color only)", cost=300)
     def do_color_red(self):
         self.__emulator.write_rom(0x1D8C, b'\x3E\x02\x00\x00\x00\x00\x00')
         self.__emulator.write_rom(0x1DD2, b'\x3E\x02\x00\x00\x00\x00\x00')
 
-    @action(id="blue", group="color", name="Blue link (color only)", cost=500)
+    @action(id="blue", group="color", name="Blue link (color only)", cost=300)
     def do_color_blue(self):
         self.__emulator.write_rom(0x1D8C, b'\x3E\x03\x00\x00\x00\x00\x00')
         self.__emulator.write_rom(0x1DD2, b'\x3E\x03\x00\x00\x00\x00\x00')
 
-    @action(id="disco", group="color", name="Disco link (30 seconds, color only)", cost=500)
+    @action(id="disco", group="color", name="Disco link (30 seconds, color only)", cost=50)
     def do_color_disco(self):
         self.__emulator.write_rom(0x1D8C, b'\x3E\x00\x00\x00\x00\x00\x00')
         self.__emulator.write_rom(0x1DD2, b'\x3E\x00\x00\x00\x00\x00\x00')
@@ -233,7 +249,7 @@ class LADXR(Game):
         self.__emulator.write_rom8(0x1D8D, 0)
         self.__emulator.write_rom8(0x1DD3, 0)
 
-    @action(id="rng", name="Randomize inventory", cost=200)
+    @action(id="rng", name="Randomize inventory", cost=100)
     def do_randomize_inventory(self):
         items = [n for n in self.__emulator.read_ram(0xDB00 - 0xC000, 16) if n != 0]
         random.shuffle(items)
