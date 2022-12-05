@@ -8,22 +8,16 @@
 function update() {
     const req = new XMLHttpRequest();
     req.addEventListener("load", function() {
-        document.getElementById("info").innerHTML = this.responseText + this.responseText;
+        document.getElementById("info").innerHTML = this.responseText;
     });
-    req.open("GET", "/info_content");
+    var content = document.location.hash.substr(1);
+    if (content == "")
+        content = "content";
+    req.open("GET", "/info/" + content);
     req.send();
-    setTimeout(update, 1000);
+    setTimeout(update, 500);
 }
 setTimeout(update, 500);
-function autoscroll() {
-    var i = document.getElementById("info");
-    i.scrollTop += 1;
-    if (i.scrollTop > i.scrollHeight / 2.0)
-        i.scrollTop -= i.scrollHeight / 2.0;
-
-    window.requestAnimationFrame(autoscroll);
-}
-window.requestAnimationFrame(autoscroll);
     </script>
 </head>
 <body style="margin: 0">

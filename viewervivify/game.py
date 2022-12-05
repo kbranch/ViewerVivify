@@ -41,6 +41,7 @@ class Game:
         if act.timeout_function:
             if act.repeat_function:
                 self.__sched.enter(act.repeat_delay, 0, lambda: self.__action_repeat(act))
+            act.start_time = time.monotonic()
             self.__sched.enter(act.timeout_delay, 0, lambda: self.__action_timeout(act))
         else:
             act.busy = False
@@ -76,6 +77,13 @@ class GameAction:
         self.repeat_delay = None
         self.repeat_function = None
         self.busy = False
+        self.start_time = None
+
+    @property
+    def progress(self):
+        if self.start_time is None:
+            return 0.0
+        return (time.monotonic() - self.start_time) / self.timeout_delay
 
     def timeout(self, delay):
         def timeout_wrapper(timeout_function):

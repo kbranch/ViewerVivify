@@ -1,0 +1,8 @@
+{% if g.game %}
+    Available actions:
+    <dl>
+    {% for action in g.game.get_actions() %}
+        <dt>{%if action.busy%}<strike>{%endif%}!{{action.id}}:{%if action.busy%}</strike>{%endif%}</dt> <dd>{{action.name}} ({{action.cost}})</dd><br>
+    {% endfor %}
+    </dl>
+{% endif %}

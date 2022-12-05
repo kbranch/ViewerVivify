@@ -1,0 +1,10 @@
+{% if not g.twitch or not g.twitch.is_connected %}
+    Not connected to twitch<br>
+{% else %}
+    User points:
+    <dl>
+    {% for user in g.twitch.users %}
+        <dt>{{user.get("nick")}}</dt> <dd>{{user.get("points")|int}}</dd>
+    {% endfor %}
+    </dl>
+{% endif %}

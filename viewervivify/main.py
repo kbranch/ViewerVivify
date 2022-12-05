@@ -17,11 +17,11 @@ def get_info():
     return flask.render_template("info.html")
 
 
-@app.route("/info_content")
-def get_info_content():
+@app.route("/info/<info_type>")
+def get_info_content(info_type):
     flask.g.twitch = g.instance.irc
     flask.g.game = g.instance.game
-    return flask.render_template("info_content.html")
+    return flask.render_template(f"info_{info_type}.html")
 
 
 @app.route("/status")

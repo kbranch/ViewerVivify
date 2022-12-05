@@ -1,0 +1,10 @@
+{% if g.game %}
+    {% for action in g.game.get_actions() %}
+        {%if action.busy%}
+            <div class="action">
+                {{action.id}}
+                <span class="action_progress" style="width: {{100-action.progress*100}}%"></span>
+            </div>
+        {%endif%}
+    {% endfor %}
+{% endif %}

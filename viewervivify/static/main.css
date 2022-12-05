@@ -33,3 +33,24 @@ dt, dd {
     padding: 0.25rem 0;
     border-bottom: 1px solid gray;
 }
+
+.action {
+    text-align: center;
+    font-size: 10vw;
+    background-color: white;
+    border-radius: 3vw;
+    position: relative;
+    margin: 1vw;
+    z-index: 0;
+}
+.action_progress {
+    background-color: #8F8;
+    border-radius: 3vw;
+    z-index: -1;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+
+    width: 50%;
+    height: 100%;
+}

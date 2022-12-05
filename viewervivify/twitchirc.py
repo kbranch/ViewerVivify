@@ -5,6 +5,7 @@ import time
 
 
 POINTS_PER_SECOND = 1.0
+SUB_BONUS = 1.0
 ONLINE_LIST_TIME = 600
 
 
@@ -62,6 +63,8 @@ class TwitchIRC(IRC):
             for nick, user in self.get_users().items():
                 if user.get("online"):
                     user["points"] = user.get("points", 0.0) + points_delta
+                    if user.get("subscriber", "0") == "1":
+                        user["points"] = user.get("points", 0.0) + points_delta * SUB_BONUS
 
     @property
     def users(self):
