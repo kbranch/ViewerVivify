@@ -130,8 +130,9 @@ class LADXR(Game):
 
     @action(id="disablesword", group="input", name="Disable sword (60 seconds)", cost=500)
     def do_disable_sword(self):
-        self.__emulator.write_rom16(0x129E + 2, 0x12ED)
+        self.__emulator.write_rom16(0x129E + 2, 0x12D3)
         self.__emulator.write_rom8(0x1322, 0xFF)
+        self.__emulator.write_rom(0x12D3, b'\x3E\x19\xE0\xF3\xC9')
     @do_disable_sword.timeout(60)
     def do_enable_sword(self):
         self.__emulator.write_rom16(0x129E + 2, 0x1528)
@@ -139,7 +140,8 @@ class LADXR(Game):
 
     @action(id="disablebombs", group="input", name="Disable bombs (60 seconds)", cost=500)
     def do_disable_bombs(self):
-        self.__emulator.write_rom16(0x129E + 4, 0x12ED)
+        self.__emulator.write_rom16(0x129E + 4, 0x12D3)
+        self.__emulator.write_rom(0x12D3, b'\x3E\x19\xE0\xF3\xC9')
     @do_disable_bombs.timeout(60)
     def do_enable_bombs(self):
         self.__emulator.write_rom16(0x129E + 4, 0x135A)
@@ -153,56 +155,64 @@ class LADXR(Game):
 
     @action(id="disablebow", group="input", name="Disable bow (60 seconds)", cost=500)
     def do_disable_bow(self):
-        self.__emulator.write_rom16(0x129E + 10, 0x12ED)
+        self.__emulator.write_rom16(0x129E + 10, 0x12D3)
+        self.__emulator.write_rom(0x12D3, b'\x3E\x19\xE0\xF3\xC9')
     @do_disable_bow.timeout(60)
     def do_enable_bow(self):
         self.__emulator.write_rom16(0x129E + 10, 0x13BD)
 
     @action(id="disablehook", group="input", name="Disable hookshot (60 seconds)", cost=500)
     def do_disable_hook(self):
-        self.__emulator.write_rom16(0x129E + 12, 0x12ED)
+        self.__emulator.write_rom16(0x129E + 12, 0x12D3)
+        self.__emulator.write_rom(0x12D3, b'\x3E\x19\xE0\xF3\xC9')
     @do_disable_hook.timeout(60)
     def do_enable_hook(self):
         self.__emulator.write_rom16(0x129E + 12, 0x1319)
 
     @action(id="disablerod", group="input", name="Disable magic rod (60 seconds)", cost=500)
     def do_disable_rod(self):
-        self.__emulator.write_rom16(0x129E + 14, 0x12ED)
+        self.__emulator.write_rom16(0x129E + 14, 0x12D3)
+        self.__emulator.write_rom(0x12D3, b'\x3E\x19\xE0\xF3\xC9')
     @do_disable_rod.timeout(60)
     def do_enable_rod(self):
         self.__emulator.write_rom16(0x129E + 14, 0x12D8)
 
     @action(id="disableocarina", group="input", name="Disable ocarina (60 seconds)", cost=500)
     def do_disable_ocarina(self):
-        self.__emulator.write_rom16(0x129E + 18, 0x12ED)
+        self.__emulator.write_rom16(0x129E + 18, 0x12D3)
+        self.__emulator.write_rom(0x12D3, b'\x3E\x19\xE0\xF3\xC9')
     @do_disable_ocarina.timeout(60)
     def do_enable_ocarina(self):
         self.__emulator.write_rom16(0x129E + 18, 0x41FC)
 
     @action(id="disablefeather", group="input", name="Disable feather (60 seconds)", cost=500)
     def do_disable_feather(self):
-        self.__emulator.write_rom16(0x129E + 20, 0x12ED)
+        self.__emulator.write_rom16(0x129E + 20, 0x12D3)
+        self.__emulator.write_rom(0x12D3, b'\x3E\x19\xE0\xF3\xC9')
     @do_disable_feather.timeout(60)
     def do_enable_feather(self):
         self.__emulator.write_rom16(0x129E + 20, 0x14CB)
 
     @action(id="disableshovel", group="input", name="Disable shovel (60 seconds)", cost=500)
     def do_disable_shovel(self):
-        self.__emulator.write_rom16(0x129E + 22, 0x12ED)
+        self.__emulator.write_rom16(0x129E + 22, 0x12D3)
+        self.__emulator.write_rom(0x12D3, b'\x3E\x19\xE0\xF3\xC9')
     @do_disable_shovel.timeout(60)
     def do_enable_shovel(self):
         self.__emulator.write_rom16(0x129E + 22, 0x12F8)
 
     @action(id="disablepowder", group="input", name="Disable magic powder (60 seconds)", cost=500)
     def do_disable_powder(self):
-        self.__emulator.write_rom16(0x129E + 24, 0x12ED)
+        self.__emulator.write_rom16(0x129E + 24, 0x12D3)
+        self.__emulator.write_rom(0x12D3, b'\x3E\x19\xE0\xF3\xC9')
     @do_disable_powder.timeout(60)
     def do_enable_powder(self):
         self.__emulator.write_rom16(0x129E + 24, 0x148D)
 
     @action(id="disablerang", group="input", name="Disable boomerang (60 seconds)", cost=500)
     def do_disable_rang(self):
-        self.__emulator.write_rom16(0x129E + 26, 0x12ED)
+        self.__emulator.write_rom16(0x129E + 26, 0x12D3)
+        self.__emulator.write_rom(0x12D3, b'\x3E\x19\xE0\xF3\xC9')
     @do_disable_rang.timeout(60)
     def do_enable_rang(self):
         self.__emulator.write_rom16(0x129E + 26, 0x1383)
