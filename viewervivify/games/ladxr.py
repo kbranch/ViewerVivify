@@ -72,6 +72,13 @@ class LADXR(Game):
     def do_addbombs(self):
         self.__emulator.write_ram8(0xDB4D - 0xC000, min(self.__emulator.read_ram8(0xDB4D - 0xC000) + 0x10, self.__emulator.read_ram8(0xDB77 - 0xC000)))
 
+    @action(id="invisilink", group="gfx", name="Make link invisible", cost=500)
+    def do_invisilink(self):
+        self.__emulator.write_rom8(0x1D59, 0xC9)
+    @do_invisilink.timeout(60)
+    def undo_invisilink(self):
+        self.__emulator.write_rom8(0x1D59, 0xD0)
+
     @action(id="gfxages", group="gfx", name="AgesGirl graphics", cost=500)
     def do_gfx_agesgirl(self):
         self.do_gfx("AgesGirl")
