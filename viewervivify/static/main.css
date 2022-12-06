@@ -54,3 +54,14 @@ dt, dd {
     width: 50%;
     height: 100%;
 }
+.action_cooldown {
+    background-color: #DDD;
+    border-radius: 3vw;
+    z-index: -1;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+
+    width: 50%;
+    height: 100%;
+}

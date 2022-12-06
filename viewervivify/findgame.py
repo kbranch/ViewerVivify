@@ -23,6 +23,7 @@ class GameFinder:
     def __run_game(self, game, emu):
         print("Found game:", game)
         self.__active_game = game(emu)
+        self.__active_game.load_config(f"config/{game.__name__}.ini")
         try:
             while game.is_running(emu):
                 time.sleep(1)
