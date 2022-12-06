@@ -12,8 +12,16 @@
     <input name="twitchname"><input type="submit">
 </form>
 {% else %}
-    Connected to twitch (I hope)
-    <a href="/info">Info</a> <a href="/status">Status JSON</a>
+    Connected to twitch (I hope)<br>
+    <hr>
+    URLs for OSB browser sources:<br>
+    <a href="/info">Info</a><br>
+    <a href="/info#active">Active actions</a><br>
+    <a href="/info#points">Active viewers points list</a><br>
+    <a href="/info#actions">List of available actions</a><br>
+    <hr>
+    URL for whatever reason:<br>
+    <a href="/status">Status JSON</a>
 {% endif %}
 
 </body>
