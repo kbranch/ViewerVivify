@@ -22,7 +22,7 @@ class LADXR(Game):
         self.__emulator.write_ram8(0xDDF7 - 0xC000, self.__emulator.read_ram8(0xDDF7 - 0xC000) | 0x01)
 
     @action(id="bomb", name="Bomb rain!", cost=300)
-    def do_slime_rain(self):
+    def do_bomb_rain(self):
         self.__emulator.write_ram8(0xDE12 - 0xC000, 0x20)
 
     @action(id="cucco", name="Cucco party!", cost=200)
@@ -44,7 +44,7 @@ class LADXR(Game):
         self.__emulator.write_ram8(0xDB94 - 0xC000, 0x08)
 
     @action(id="addbombs", name="Give 10 bombs", cost=100)
-    def do_damage(self):
+    def do_addbombs(self):
         self.__emulator.write_ram8(0xDB4D - 0xC000, min(self.__emulator.read_ram8(0xDB4D - 0xC000) + 0x10, self.__emulator.read_ram8(0xDB77 - 0xC000)))
 
     @action(id="gfxages", group="gfx", name="AgesGirl graphics", cost=500)
@@ -242,10 +242,10 @@ class LADXR(Game):
 
     @action(id="slow", group="input", name="Slow (30 seconds)", cost=300)
     def do_slow(self):
-        self.__emulator.write_rom(0x11ED, b'\x3E\x01')
+        self.__emulator.write_rom(0x4481 + 0x4000, b'\x3E\x01')
     @do_slow.timeout(60)
     def undo_runrunrun(self):
-        self.__emulator.write_rom(0x11ED, b'\xF0\xB2')
+        self.__emulator.write_rom(0x4481 + 0x4000, b'\xF0\xB2')
 
     @action(id="green", group="color", name="Green link (color only)", cost=300)
     def do_color_green(self):
