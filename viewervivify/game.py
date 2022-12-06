@@ -95,8 +95,11 @@ class Game:
                 import traceback
                 traceback.print_exc()
             time.sleep(0.2)
-            if self.__config_filename and os.stat(self.__config_filename).st_mtime != self.__config_timestamp:
-                self.load_config(self.__config_filename, write=False)
+            try:
+                if self.__config_filename and os.stat(self.__config_filename).st_mtime != self.__config_timestamp:
+                    self.load_config(self.__config_filename, write=False)
+            except FileNotFoundError:
+                pass
 
 
 class GameAction:

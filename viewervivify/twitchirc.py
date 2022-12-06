@@ -2,17 +2,22 @@ from irc import IRC
 import threading
 import g
 import time
-
-
-POINTS_PER_SECOND = 1.0
-SUB_BONUS = 1.0
-ONLINE_LIST_TIME = 600
+import configparser
+import os
 
 
 class TwitchIRC(IRC):
     def __init__(self, nick, password):
         super().__init__(nick, password)
         self.__channel = None
+        os.makedirs("config", exist_ok=True)
+        self.__config_timestamp = 0
+        self.__points_per_second = 1.0
+        self.__sub_bonus = 1.0
+        self.__active_time = 600
+        self.__max_points = -1
+        self.__max_points_inactive = -1
+        self.load_config()
 
     @property
     def channel(self):
@@ -22,6 +27,35 @@ class TwitchIRC(IRC):
         self.__channel = channel
         threading.Thread(target=self.run).start()
         threading.Thread(target=self.__update_points).start()
+
+    def load_config(self, *, write=True):
+        cp = configparser.ConfigParser()
+        try:
+            cp.read_file(open("config/twitch.ini", "rt"))
+        except FileNotFoundError:
+            pass
+        if not cp.has_section("twitch"):
+            cp.add_section("twitch")
+
+        self.__points_per_second = cp.getfloat("twitch", "points_per_second", fallback=self.__points_per_second)
+        cp.set("twitch", "points_per_second", str(self.__points_per_second))
+
+        self.__sub_bonus = cp.getfloat("twitch", "sub_bonus", fallback=self.__sub_bonus)
+        cp.set("twitch", "sub_bonus", str(self.__sub_bonus))
+
+        self.__active_time = cp.getfloat("twitch", "active_time", fallback=self.__active_time)
+        cp.set("twitch", "active_time", str(self.__active_time))
+
+        self.__max_points = cp.getfloat("twitch", "max_points", fallback=self.__max_points)
+        cp.set("twitch", "max_points", str(self.__max_points))
+
+        self.__max_points_inactive = cp.getfloat("twitch", "max_points_inactive", fallback=self.__max_points_inactive)
+        cp.set("twitch", "max_points_inactive", str(self.__max_points_inactive))
+
+        if write:
+            cp.write(open("config/twitch.ini", "wt"))
+
+        self.__config_timestamp = os.stat("config/twitch.ini").st_mtime
 
     def on_server_connected(self):
         self.join(self.__channel)
@@ -58,17 +92,31 @@ class TwitchIRC(IRC):
         while True:
             time.sleep(1)
             t1 = time.monotonic()
-            points_delta = (t1 - t0) * POINTS_PER_SECOND
+            time_delta = (t1 - t0)
             t0 = t1
             for nick, user in self.get_users().items():
-                if user.get("online"):
-                    user["points"] = user.get("points", 0.0) + points_delta
-                    if user.get("subscriber", "0") == "1":
-                        user["points"] = user.get("points", 0.0) + points_delta * SUB_BONUS
+                if not user.get("online"):
+                    continue
+                max_points = self.__max_points_inactive
+                if (time.monotonic() - (user.get("last_activity", 0) or 0)) < self.__active_time or max_points < 0:
+                    max_points = self.__max_points
+                if max_points < 0:
+                    max_points = float("inf")
+                points_delta = time_delta * self.__points_per_second
+                if user.get("subscriber", "0") == "1":
+                    points_delta += time_delta * self.__sub_bonus
+                if user.get("points", 0) < max_points:
+                    user["points"] = min(max_points, user.get("points", 0.0) + points_delta)
+
+            try:
+                if os.stat("config/twitch.ini").st_mtime != self.__config_timestamp:
+                    self.load_config(write=False)
+            except FileNotFoundError:
+                pass
 
     @property
     def users(self):
         return sorted(
-            filter(lambda user: (time.monotonic() - (user.get("last_activity", 0) or 0)) < ONLINE_LIST_TIME, self.get_users().values()),
+            filter(lambda user: (time.monotonic() - (user.get("last_activity", 0) or 0)) < self.__active_time, self.get_users().values()),
             key=lambda user: -user.get("points", 0.0)
         )
