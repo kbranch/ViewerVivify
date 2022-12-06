@@ -30,9 +30,32 @@ class LADXR(Game):
         self.__emulator.write_ram8(0xDDF8 - 0xC000, 0xF1)
         self.__emulator.write_ram8(0xDDF7 - 0xC000, self.__emulator.read_ram8(0xDDF7 - 0xC000) | 0x01)
 
-    @action(id="power", name="Piece of power", cost=10)
+    @action(id="power", name="Piece of power", cost=50)
     def do_pop(self):
         self.__emulator.write_ram8(0xDDF8 - 0xC000, 0xF2)
+        self.__emulator.write_ram8(0xDDF7 - 0xC000, self.__emulator.read_ram8(0xDDF7 - 0xC000) | 0x01)
+
+    @action(id="tele", name="Teleport!", cost=100)
+    def do_teleport(self):
+        if self.__emulator.read_ram8(0xDBAE - 0xC000): # Check if we are indoor
+            physics_flags = self.__emulator.read_rom(0x4000 * 7 + 0x4BD4, 0x100)
+        else:
+            physics_flags = self.__emulator.read_rom(0x4000 * 7 + 0x4AD4, 0x100)
+        objects = self.__emulator.read_ram(0xD700 - 0xC000, 0x100)
+        options = []
+        for y in range(8):
+            for x in range(10):
+                flags = physics_flags[objects[x + y * 16 + 17]]
+                if flags in {0x00, 0x02, 0x05, 0x06, 0x08, 0x0A}:
+                    options.append((x, y))
+        if len(options) == 0:
+            return
+        x, y = random.choice(options)
+        self.__emulator.write_hram(0x98 - 0x80, bytes([x * 16 + 8, y * 16 + 16]))
+
+    @action(id="warp", name="Warp!", cost=1500)
+    def do_world_warp(self):
+        self.__emulator.write_ram8(0xDDF8 - 0xC000, 0xF4)
         self.__emulator.write_ram8(0xDDF7 - 0xC000, self.__emulator.read_ram8(0xDDF7 - 0xC000) | 0x01)
 
     @action(id="regen", name="Regenerate health", cost=100)
