@@ -126,7 +126,13 @@ class LADXR(Game):
 
     def do_gfx(self, name):
         gfx = open(f"data/ladx/{name}.bin", "rb").read()
-        self.__emulator.write_rom(0x2C * 0x4000, gfx)
+        offset = 0x2C * 0x4000
+        # Write the graphics data, but ignore some sections as they are patched differently by LADXR
+        for bank, start, end in [(0x2C, 0x0900, 0x0940), (0x30, 0x3000, 0x3800)]:
+            end_offset = bank * 0x4000 + start
+            self.__emulator.write_rom(offset, gfx[offset-0x2C * 0x4000:end_offset-0x2C * 0x4000])
+            offset = bank * 0x4000 + end
+        self.__emulator.write_rom(offset, gfx[offset - 0x2C * 0x4000:])
 
     @action(id="disablesword", group="input", name="Disable sword (60 seconds)", cost=500)
     def do_disable_sword(self):
