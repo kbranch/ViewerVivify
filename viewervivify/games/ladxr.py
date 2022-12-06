@@ -37,7 +37,8 @@ class LADXR(Game):
 
     @action(id="tele", name="Teleport!", cost=100)
     def do_teleport(self):
-        if self.__emulator.read_ram8(0xDBA5 - 0xC000):  # Check if we are indoor
+        indoor = self.__emulator.read_ram8(0xDBA5 - 0xC000)
+        if indoor:  # Check if we are indoor
             physics_flags = self.__emulator.read_rom(0x4000 * 7 + 0x4BD4, 0x100)
         else:
             physics_flags = self.__emulator.read_rom(0x4000 * 7 + 0x4AD4, 0x100)
@@ -50,6 +51,20 @@ class LADXR(Game):
                     flags = physics_flags[obj]
                     if flags in {0x00, 0x02, 0x05, 0x06, 0x08, 0x0A}:
                         options.append((x, y))
+        if indoor:
+            # In case of indoor, try to prevent teleporting out of bounds.
+            def remove(x, y):
+                if (x, y) not in options:
+                    return
+                options.remove((x, y))
+                remove(x + 1, y)
+                remove(x - 1, y)
+                remove(x, y + 1)
+                remove(x, y - 1)
+            remove(0, 0)
+            remove(9, 0)
+            remove(0, 7)
+            remove(9, 7)
         if len(options) == 0:
             return
         x, y = random.choice(options)
