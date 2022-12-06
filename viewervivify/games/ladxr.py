@@ -55,7 +55,7 @@ class LADXR(Game):
         x, y = random.choice(options)
         self.__emulator.write_hram(0x98 - 0x80, bytes([x * 16 + 8, y * 16 + 16]))
 
-    @action(id="warp", name="Warp!", cost=1500)
+    @action(id="warp", name="Warp!", cost=2500)
     def do_world_warp(self):
         self.__emulator.write_ram8(0xDDF8 - 0xC000, 0xF4)
         self.__emulator.write_ram8(0xDDF7 - 0xC000, self.__emulator.read_ram8(0xDDF7 - 0xC000) | 0x01)
