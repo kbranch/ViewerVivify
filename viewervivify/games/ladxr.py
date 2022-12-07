@@ -273,6 +273,8 @@ class LADXR(Game):
     @action(id="disableflippers", group="input", name="Disable flippers (60 seconds)", cost=500)
     def do_disable_flippers(self):
         self.__emulator.write_rom(0x7717 + 0x4000, b'\x00\x00')
+        if self.__emulator.read_ram8(0xC11C - 0xC000) == 0x01:
+            self.__emulator.write_ram8(0xC11C - 0xC000, 0x00)
     @do_disable_flippers.timeout(60)
     def do_enable_flippers(self):
         self.__emulator.write_rom(0x7717 + 0x4000, b'\x20\x19')
