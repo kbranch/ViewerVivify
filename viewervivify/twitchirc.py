@@ -75,18 +75,19 @@ class TwitchIRC(IRC):
             return None
         if message == "!points":
             return f"has {int(user.get('points', 0))} points"
+        action_name, _, params = message[1:].partition(" ")
         game = g.instance.game
         if not game:
-            return f"No game found for action {message[1:]}"
-        act = game.find_action(message[1:])
+            return f"No game found for action {action_name}"
+        act = game.find_action(action_name)
         if act is None:
-            return f"Action {message[1:]} not found"
+            return f"Action {action_name} not found"
         if act.busy:
             return f"{act.id} is still busy"
         if act.cost > user.get("points", 0):
             return f"Not enough points for {act.id} ({int(user.get('points', 0))}/{act.cost})"
         user["points"] = user.get("points", 0) - act.cost
-        g.instance.game.run_action(act)
+        g.instance.game.run_action(act, params)
         return f"Executing {act.id} ({int(user.get('points', 0))} points left)"
 
     def __update_points(self):

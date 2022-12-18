@@ -1,7 +1,7 @@
 from evilemu.emulator import Emulator
 import os
 import random
-import binascii
+import time
 from game import Game, action
 
 
@@ -342,3 +342,25 @@ class LADXR(Game):
         random.shuffle(items)
         items += [0] * (16 - len(items))
         self.__emulator.write_ram(0xDB00 - 0xC000, bytes(items))
+
+    @action(id="msg", name="Ingame message", cost=300)
+    def do_message(self, message):
+        while self.__emulator.read_ram8(0xDB95 - 0xC000) != 0x0B or self.__emulator.read_ram8(0xDB96 - 0xC000) != 0x07 or self.__emulator.read_ram8(0xC124 - 0xC000) != 0x00 or self.__emulator.read_ram8(0xC19F - 0xC000) != 0x00 or self.__emulator.read_hram8(0xA1 - 0x80) != 0x00:
+            time.sleep(0.1)
+        data = message.encode("ascii", "replace")[:95]
+        self.__emulator.write_ram(0xC0A0 - 0xC000, data + b'\xff')
+        self.__emulator.write_ram8(0xC177 - 0xC000, 0)  # wDialogAskSelectionIndex
+        self.__emulator.write_ram8(0xC173 - 0xC000, 0xC9)  # wDialogIndex
+
+        self.__emulator.write_ram8(0xC16F - 0xC000, 0)  # wDialogOpenCloseAnimationFrame
+        self.__emulator.write_ram8(0xC170 - 0xC000, 0)  # wDialogCharacterIndex
+        self.__emulator.write_ram8(0xC164 - 0xC000, 0)  # wDialogCharacterIndexHi
+        self.__emulator.write_ram8(0xC108 - 0xC000, 0)  # wNameIndex
+        self.__emulator.write_ram8(0xC112 - 0xC000, 0)  # wDialogIndexHi
+
+        self.__emulator.write_ram8(0xC5AB - 0xC000, 0x0F)  # wDialogSFX
+
+        if self.__emulator.read_hram8(0x99 - 0x80) < 0x48:
+            self.__emulator.write_ram8(0xC19F - 0xC000, 0x81)  # wDialogState
+        else:
+            self.__emulator.write_ram8(0xC19F - 0xC000, 0x01)  # wDialogState

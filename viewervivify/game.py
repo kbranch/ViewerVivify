@@ -3,6 +3,8 @@ import threading
 import time
 import configparser
 import os
+from inspect import signature
+
 
 
 class Game:
@@ -56,12 +58,16 @@ class Game:
                 return act
         return None
 
-    def run_action(self, act):
+    def run_action(self, act, params):
         act.busy = True
-        self.__sched.enter(0, 0, lambda: self.__action_start(act))
+        self.__sched.enter(0, 0, lambda: self.__action_start(act, params))
 
-    def __action_start(self, act):
-        act.function(self)
+    def __action_start(self, act, params):
+        sig = signature(act.function)
+        if len(sig.parameters) == 1:
+            act.function(self)
+        else:
+            act.function(self, params)
         if act.timeout_function:
             if act.repeat_function:
                 self.__sched.enter(act.repeat_delay, 0, lambda: self.__action_repeat(act))
