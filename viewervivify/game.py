@@ -120,7 +120,7 @@ class GameAction:
     @property
     def progress(self):
         if self.start_time is None or self.timeout_delay == 0.0:
-            return 0.0
+            return 1.0
         return min(1.0, max(0.0, (time.monotonic() - self.start_time) / self.timeout_delay))
 
     @property
