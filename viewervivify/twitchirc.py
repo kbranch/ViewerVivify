@@ -73,6 +73,8 @@ class TwitchIRC(IRC):
     def __handle_message(self, user, message):
         if not message.startswith("!"):
             return None
+        if message == "!points":
+            return f"{user} has {int(user.get('points', 0))} points"
         game = g.instance.game
         if not game:
             return f"No game found for action {message[1:]}"
