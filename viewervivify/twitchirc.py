@@ -74,7 +74,7 @@ class TwitchIRC(IRC):
         if not message.startswith("!"):
             return None
         if message == "!points":
-            return f"{user} has {int(user.get('points', 0))} points"
+            return f"has {int(user.get('points', 0))} points"
         game = g.instance.game
         if not game:
             return f"No game found for action {message[1:]}"
@@ -87,7 +87,7 @@ class TwitchIRC(IRC):
             return f"Not enough points for {act.id} ({int(user.get('points', 0))}/{act.cost})"
         user["points"] = user.get("points", 0) - act.cost
         g.instance.game.run_action(act)
-        return f"Executing {act.id}"
+        return f"Executing {act.id} ({int(user.get('points', 0))} points left)"
 
     def __update_points(self):
         t0 = time.monotonic()
