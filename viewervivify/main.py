@@ -21,7 +21,11 @@ def get_info():
 def get_info_content(info_type):
     flask.g.twitch = g.instance.irc
     flask.g.game = g.instance.game
-    return flask.render_template(f"info_{info_type}.html")
+
+    response = flask.make_response(flask.render_template(f"info_{info_type}.html"))
+    response.headers.add('Access-Control-Allow-Origin', '*')
+
+    return response
 
 
 @app.route("/status")
