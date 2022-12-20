@@ -52,8 +52,18 @@ def get_actions():
     flask.g.twitch = g.instance.irc
     flask.g.game = g.instance.game
 
+    actions = []
+
+    for action in flask.g.game.get_actions():
+        actions.append({
+            'id': action.id,
+            'busy': action.busy,
+            'name': action.name,
+            'cost': action.cost,
+        })
+
     response = app.response_class(
-        response=json.dumps(flask.g.game.get_actions()),
+        response=json.dumps(actions),
         status=200,
         mimetype='application/json'
     )
