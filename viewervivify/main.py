@@ -48,7 +48,7 @@ def get_points():
 
 
 @app.route("/api/actions")
-def get_points():
+def get_actions():
     flask.g.twitch = g.instance.irc
     flask.g.game = g.instance.game
 
