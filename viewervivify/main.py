@@ -27,7 +27,7 @@ def get_info_content(info_type):
 
 
 @app.route("/api/info")
-def get_info():
+def get_api_info():
     flask.g.twitch = g.instance.irc
     flask.g.game = g.instance.game
 
