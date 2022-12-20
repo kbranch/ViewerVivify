@@ -26,8 +26,8 @@ def get_info_content(info_type):
     return flask.render_template(f"info_{info_type}.html")
 
 
-@app.route("/api/points")
-def get_points():
+@app.route("/api/info")
+def get_info():
     flask.g.twitch = g.instance.irc
     flask.g.game = g.instance.game
 
@@ -35,22 +35,6 @@ def get_points():
 
     for user in flask.g.twitch.users:
         points[user.get("nick")] = user.get("points")
-
-    response = app.response_class(
-        response=json.dumps(points),
-        status=200,
-        mimetype='application/json'
-    )
-
-    response.headers.add('Access-Control-Allow-Origin', '*')
-
-    return response
-
-
-@app.route("/api/actions")
-def get_actions():
-    flask.g.twitch = g.instance.irc
-    flask.g.game = g.instance.game
 
     actions = []
 
@@ -62,8 +46,13 @@ def get_actions():
             'cost': action.cost,
         })
 
+    info = {
+        'points': points,
+        'actions': actions,
+    }
+
     response = app.response_class(
-        response=json.dumps(actions),
+        response=json.dumps(info),
         status=200,
         mimetype='application/json'
     )
