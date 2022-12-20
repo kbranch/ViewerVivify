@@ -34,7 +34,7 @@ def get_api_info():
     points = {}
 
     for user in flask.g.twitch.users:
-        points[user.get("nick")] = user.get("points")
+        points[user.get("nick")] = int(user.get("points"))
 
     actions = []
 
